@@ -1,0 +1,112 @@
+<div class="form-section">
+  <div class="p-4 d-flex justify-content-between align-items-center rounded" style="background-color: rgba(229, 229, 229, 0.2);">
+    <h1 class="mb-0">TO DO</h1>
+    <button (click)="showDialog()" class="btn btn-outline-dark"><i class='bx  bx-plus'  ></i>  Add Task</button>
+  </div>
+<div class="my-3 d-flex gap-2 justify-content-center flex-wrap">
+  <a
+          [ngClass]="filterStatus === 'all' ? 'filter-text-active' : 'filter-text'"
+          (click)="filterStatus = 'all'">
+    All <span class="text-white">{{ tasks.length }}</span>
+  </a>
+  <div style="color:rgb(181, 181, 181) ;">|</div>
+  <a
+          [ngClass]="filterStatus === 'opened' ? 'filter-text-active' : 'filter-text'"
+          (click)="filterStatus = 'opened'">
+    Open <span class="text-white">{{ getOpenedCount() }}</span>
+  </a>
+
+  <a 
+          [ngClass]="filterStatus === 'closed' ? 'filter-text-active' : 'filter-text'"
+          (click)="filterStatus = 'closed'">
+    Closed <span class="text-white">{{ getClosedCount() }}</span>
+  </a>
+
+  <a 
+          [ngClass]="filterStatus === 'today' ? 'filter-text-active' : 'filter-text'"
+          (click)="filterStatus = 'today'">
+    Today <span class="text-white">{{ getTodayCount() }}</span>
+  </a>
+</div>
+
+  <div class="card mb-3 p-md-4 p-2 rounded" style="box-shadow: none;">
+    <div class="mb-3 p-md-4 p-3 rounded" *ngFor="let group of getGroupedTasks()">
+      <div>
+        <div class="date-header"><i class='bx  bx-calendar text-dark' style="font-size: 22px;"></i>  {{ group[0] | date: 'fullDate' }}</div>
+        <div class="row">
+          <div class="col-md-6 col-lg-4 p-2" *ngFor="let task of group[1]" >
+            <div class="card p-4" [ngClass]="getCardClass(task)">
+              <div class="d-flex justify-content-between align-items-start">
+                <div class="">
+                  <div class="task-title">{{ task.name }}</div>
+                  <p class="card-text">{{ task.description }}</p>
+                </div>
+                <div class="">
+                  <button *ngIf="['Active', 'Completed', 'Pending'].includes(getStatus(task))"
+                          class="btn"
+                          [ngClass]="task.completed ? 'btn-secondary' : 'btn-success'"
+                          (click)="toggleStatus(task)">
+                    <i class="fas" [ngClass]="task.completed ? 'fa-undo' : 'fa-check'"></i>
+                  </button>
+                </div>
+              </div>
+              <hr class="my-1" style="color: rgba(0, 0, 0, 0.2);"/>
+              <div class="d-flex justify-content-between align-items-center">
+                <p class="card-text1"><b>Time:</b> {{ task.fromDate | date:'shortTime' }} – {{ task.toDate | date:'shortTime' }}</p>
+                <div class="task-actions">
+                  <a (click)="editTask(task)" title="Update" *ngIf="['Active', 'Completed', 'Pending'].includes(getStatus(task))"><i class="fas fa-edit text-dark"></i></a>
+                  <a (click)="confirmDeleteTask(task)" title="Delete"><i class="fas fa-trash-alt text-danger"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        
+    </div>
+    
+  </div>
+</div>
+
+<p-dialog header="{{ isEditing ? 'Update Task' : 'Add Task' }}" [(visible)]="display" [modal]="true" [closable]="true">
+  <form class="row g-3 pt-4">
+
+    
+
+
+      <div class="row">
+        <div class="col-md">
+          <label class="form-label text-nowrap">Task Name</label>
+          <input type="text" class="form-control" [(ngModel)]="taskName" maxlength="30" name="taskName" placeholder="Enter task name" />
+        </div>
+        <div class="col-md">
+          <label class="form-label text-nowrap">Task Description</label>
+          <input type="text" class="form-control" [(ngModel)]="taskDescription" maxlength="20" name="taskDescription" placeholder="Enter task description" />
+        </div>
+        <div class="col-md">
+          <label class="form-label text-nowrap">From Date</label>
+          <input type="datetime-local" class="form-control" [(ngModel)]="fromDate" name="fromDate" />
+        </div>
+        <div class="col-md">
+          <label class="form-label text-nowrap">To Date</label>
+          <input type="datetime-local" class="form-control" [(ngModel)]="toDate" name="toDate" />
+        </div>
+        <div class="col-md mt-2 d-flex gap-2 align-items-end">
+          <button type="button" class="btn btn-primary text-nowrap" (click)="addOrUpdateTask()">
+            {{ isEditing ? 'Save Update' : 'Add Task' }}
+          </button>
+          <button *ngIf="isEditing" type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+        </div>
+      </div>
+    </form>
+</p-dialog>
+
+<p-dialog header="Confirm Delete" [(visible)]="displayDeleteConfirm" [modal]="true" [closable]="false" [dismissableMask]="false" [style]="{ width: '100%', maxWidth: '25rem' }">
+  <p>Are you sure you want to delete this task?</p>
+  <div class="d-flex justify-content-end gap-2 mt-3">
+    <button type="button" class="btn btn-secondary" (click)="cancelDelete()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteConfirmed()">Delete</button>
+  </div>
+</p-dialog>
+
+<p-toast></p-toast>
