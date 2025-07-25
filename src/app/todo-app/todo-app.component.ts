@@ -111,7 +111,7 @@ export class TodoAppComponent implements OnInit {
   deleteConfirmed() {
     if (this.taskToDelete) {
       this.tasks = this.tasks.filter(t => t !== this.taskToDelete);
-      this.messageService.add({ severity: 'error', summary: 'Deleted', detail: 'Task deleted' });
+      this.messageService.add({ severity: 'info', summary: 'Deleted', detail: 'Task deleted' });
     }
     this.displayDeleteConfirm = false;
     this.taskToDelete = null;
