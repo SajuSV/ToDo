@@ -52,7 +52,7 @@
               </div>
               <hr class="my-1" style="color: rgba(0, 0, 0, 0.2);"/>
               <div class="d-flex justify-content-between align-items-center">
-                <p class="card-text1"><b>Time:</b> {{ task.fromDate | date:'medium' }} – {{ task.toDate | date:'medium' }}</p>
+                <p class="card-text1"><b>Time:</b> {{ task.fromDate | date:'d MMM, h:mm a' }} – {{ task.toDate | date:'d MMM, h:mm a' }}</p>
                 <div class="task-actions">
                   <a (click)="editTask(task)" title="Update" *ngIf="['Active', 'Completed', 'Pending'].includes(getStatus(task))"><i class="fas fa-edit text-dark"></i></a>
                   <a (click)="confirmDeleteTask(task)" title="Delete"><i class="fas fa-trash-alt text-danger"></i></a>
