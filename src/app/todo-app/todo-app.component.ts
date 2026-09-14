@@ -21,7 +21,48 @@ export class TodoAppComponent implements OnInit {
   taskDescription = '';
   fromDate = '';
   toDate = '';
-  tasks: Task[] = [];
+  tasks: any[] = [
+  {
+    id: 1,
+    name: 'Complete Portfolio',
+    description: 'Finish Angular portfolio',
+    fromDate: '2026-09-14T09:00',
+    toDate: '2026-09-14T11:00',
+    completed: false
+  },
+  {
+    id: 2,
+    name: 'Design Homepage',
+    description: 'Create homepage UI',
+    fromDate: '2026-09-14T11:30',
+    toDate: '2026-09-14T13:00',
+    completed: false
+  },
+  {
+    id: 3,
+    name: 'Review Tasks',
+    description: 'Check pending tasks',
+    fromDate: '2026-09-15T10:00',
+    toDate: '2026-09-15T11:00',
+    completed: false
+  },
+  {
+    id: 4,
+    name: 'Update Resume',
+    description: 'Add latest experience',
+    fromDate: '2026-09-15T14:00',
+    toDate: '2026-09-15T15:30',
+    completed: false
+  },
+  {
+    id: 5,
+    name: 'Learn Angular',
+    description: 'Practice Angular basics',
+    fromDate: '2026-09-16T09:30',
+    toDate: '2026-09-16T11:00',
+    completed: false
+  }
+];
 
   isEditing = false;
   editingIndex: number | null = null;
